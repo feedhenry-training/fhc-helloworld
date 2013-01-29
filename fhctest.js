@@ -5,16 +5,23 @@ var async = require('async');
 var sys = require('sys');
 
 // Sample script to do the following:
-// - APP_GUID env var is passed in
-// - Run the server side tests
+// - Target a FeedHenry account using the TARGET/USER/PWD environment variables
+// - use the APPGUID env var to find our App
+// - Run the server side tests of the App
 // - Do an Android build of the App
 
 fhc.fhc.load(function (err) {
   if (err) return fatal("Unexpected error loading FHC: " + err);
 
-  // check we have APPGUID
+  // check we have our various environment variables
+  checkEnv();
+
+  // set the FHC target and login
+  setTargetAndLogin(function(err){
+    if(err) return fatal("Problem setting FHC target: " + util.inspect(err));
+
+  
   var appId = process.env['APPGUID'];
-  if (!appId) return fatal("Please set the 'APPGUID' environment variable");
   console.log("Using App: " + appId);
 
   // Check the App exists ('dev' environment by default)
@@ -35,13 +42,29 @@ fhc.fhc.load(function (err) {
       });
     });
   });
+  });
 });
+
+// check our environment
+function checkEnv() {
+  if (!process.env['TARGET']) return fatal("Please set the 'TARGET' environment variable");
+  if (!process.env['USER']) return fatal("Please set the 'USER' environment variable");
+  if (!process.env['PASSWORD']) return fatal("Please set the 'PASSWORD' environment variable");
+  if (!process.env['APPGUID']) return fatal("Please set the 'APPGUID' environment variable");
+};
+
+function setTargetAndLogin(cb) {
+  var target = process.env['TARGET'];  
+  var user = process.env['USER'];  
+  var password = process.env['PASSWORD'];  
+  fhc.target([target, user, password], cb);
+};
 
 // utility function
 function fatal(msg) {
   console.error(msg);
   process.exit(1);
-}
+};
 
 // Run a very basic server side test
 function runServerSideTests(appId, cb){

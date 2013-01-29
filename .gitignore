@@ -1,4 +1,3 @@
-cloud-cov
 *.seed
 *.log
 *.csv
@@ -6,6 +5,7 @@ cloud-cov
 *.out
 *.pid
 *.gz
+*.apk
 
 pids
 logs
@@ -15,4 +15,3 @@ npm-debug.log
 *node_modules*
 .fhclocal
 *~
-cloudcoverage.html
