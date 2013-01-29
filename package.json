@@ -1,0 +1,9 @@
+{ 
+  "name" : "fhc-helloworld",
+  "description" : "Sample FHC test script",
+  "version": "0.1.0",
+  "dependencies" :{
+    "fh-fhc" : "*",
+    "async" : "*"
+  }
+}
