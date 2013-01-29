@@ -5,7 +5,7 @@ APPGUID?="PLEASE_DEFINE_APPGUID"
 
 all: clean deps test
 
-test: 
+test: deps
 	@env APPGUID=$(APPGUID) TARGET=$(TARGET) USER=$(USER) PASSWORD=$(PASSWORD) node fhctest.js
 
 deps:
